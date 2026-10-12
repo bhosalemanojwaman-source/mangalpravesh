@@ -1,6 +1,8 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 
+type CookieToSet = { name: string; value: string; options?: any };
+
 export async function middleware(req: NextRequest) {
   let res = NextResponse.next({ request: req });
   const supabase = createServerClient(
@@ -9,7 +11,7 @@ export async function middleware(req: NextRequest) {
     {
       cookies: {
         getAll: () => req.cookies.getAll(),
-        setAll: (list) => {
+        setAll: (list: CookieToSet[]) => {
           list.forEach(({ name, value }) => req.cookies.set(name, value));
           res = NextResponse.next({ request: req });
           list.forEach(({ name, value, options }) => res.cookies.set(name, value, options));
