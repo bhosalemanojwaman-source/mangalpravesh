@@ -3,6 +3,7 @@ import { notFound, redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
 import { LAND, STATUS, STAGES, AP, APS, QUAL, SEED, QTY, FIN, LABOUR, RATE_KEYS, readRates, calc, inr } from '@/lib/data';
+import ProjectNav from './nav';
 
 const TABS: [string, string][] = [['land', 'Land check'], ['ap', 'Approvals'], ['est', 'Estimator'], ['money', 'Money']];
 
@@ -193,11 +194,7 @@ export default async function Project({ params, searchParams }: { params: { id: 
     <main className="wrap">
       <div className="bar"><Link className="brand" href="/dashboard">MangalPravesh</Link><Link href="/dashboard">All projects</Link></div>
       <h1>{p.name}</h1>
-      <nav style={{ display: 'flex', gap: 8, flexWrap: 'wrap', margin: '10px 0 20px' }}>
-        {TABS.map(([k, label]) => (
-          <Link key={k} href={`${base}?tab=${k}`} className={k === tab ? 'btn' : 'btn ghost'} style={k === tab ? undefined : { background: 'transparent', border: '1.5px solid var(--line)', color: 'var(--ink)', padding: '6px 14px' }}>{label}</Link>
-        ))}
-      </nav>
+      <ProjectNav base={base} current={tab} />
       {body}
     </main>
   );
